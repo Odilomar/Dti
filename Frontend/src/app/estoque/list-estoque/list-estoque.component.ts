@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ApiService } from 'src/app/service/api.service';
 import { Produto } from 'src/app/interfaces/produto';
 import { faPlus, faTrashAlt, faEdit, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -21,7 +22,12 @@ export class ListEstoqueComponent implements OnInit {
    public faSearch = faSearch;
    codigo = '';
 
-  constructor(private router: Router, private apiService: ApiService, private activatedRoute: ActivatedRoute) { }
+  constructor(
+    private router: Router, 
+    private apiService: ApiService, 
+    private activatedRoute: ActivatedRoute,
+    private toastr: ToastrService
+  ) { }
 
   ngOnInit() {
     this.getListaProdutos();
@@ -41,6 +47,7 @@ export class ListEstoqueComponent implements OnInit {
     .subscribe(() => {
       this.getListaProdutos();
     }, () => {
+      this.toastr.error('Falha ao remover o produto!');
         console.log('Falha ao deletar produtos');
     });
   }
@@ -53,14 +60,16 @@ export class ListEstoqueComponent implements OnInit {
       this.produtos = [];
       this.produtos[0] = listaprodutos;
     }, () => {
-        alert('Falha ao buscar produto');
+      this.toastr.error('Falha ao buscar o produto!');
+        // alert('Falha ao buscar produto');
     });
   } else {
     this.apiService.getItems()
     .subscribe((listaprodutos: Produto[]) => {
       this.produtos = listaprodutos;
     }, () => {
-        console.log('Falha ao buscar produtos');
+      this.toastr.error('Falha ao buscar o produto!');
+        // console.log('Falha ao buscar produtos');
     });
   }
 

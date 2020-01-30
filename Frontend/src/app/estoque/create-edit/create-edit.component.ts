@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { Produto } from 'src/app/interfaces/produto';
 import { ApiService } from 'src/app/service/api.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-create-edit',
@@ -14,7 +15,12 @@ export class CreateEditComponent implements OnInit {
   @Output() outputProduto: EventEmitter<Produto> = new EventEmitter();
   titulo: string;
 
-  constructor(private apiService: ApiService, private router: Router, private activatedRoute: ActivatedRoute) {
+  constructor(
+    private apiService: ApiService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private toastr: ToastrService
+  ) {
     if (this.activatedRoute.snapshot.params.id !== undefined) {
       this.getItem(this.activatedRoute.snapshot.params.id);
     }
@@ -33,15 +39,15 @@ export class CreateEditComponent implements OnInit {
     if (this.activatedRoute.snapshot.params.id === undefined) {
       this.apiService.addItems(this.produtos)
         .subscribe(
-          () => { this.router.navigateByUrl('/'); },
-          () => { console.log('Falha ao adicionar'); }
+          () => { this.router.navigateByUrl('/'); this.toastr.success("Produto cadastrado com sucesso!"); },
+          () => { this.toastr.error('Falha ao adicionar'); }
         );
       this.outputProduto.emit(this.produtos);
     } else {
       this.apiService.atualizaItem(this.produtos)
         .subscribe(
-          () => { this.router.navigateByUrl('/'); },
-          () => { console.log('Falha ao atualizar'); }
+          () => { this.router.navigateByUrl('/'); this.toastr.success("Produto atualizado com sucesso!");},
+          () => { this.toastr.error('Falha ao atualizar'); }
         );
       this.outputProduto.emit(this.produtos);
     }
@@ -51,8 +57,9 @@ export class CreateEditComponent implements OnInit {
     this.apiService.getItem(id)
       .subscribe((listaprodutos: Produto) => {
         this.produtos = listaprodutos;
+        this.toastr.info("Produto recuperado", "O produto está disponível para edição");
       }, () => {
-        console.log('Falha ao buscar produtos');
+        this.toastr.error('Falha ao buscar produtos');
       });
   }
 }
