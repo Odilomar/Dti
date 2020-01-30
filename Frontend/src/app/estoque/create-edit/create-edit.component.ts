@@ -35,22 +35,33 @@ export class CreateEditComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.produtos);
-    if (this.activatedRoute.snapshot.params.id === undefined) {
-      this.apiService.addItems(this.produtos)
-        .subscribe(
-          () => { this.router.navigateByUrl('/'); this.toastr.success("Produto cadastrado com sucesso!"); },
-          () => { this.toastr.error('Falha ao adicionar'); }
-        );
-      this.outputProduto.emit(this.produtos);
-    } else {
-      this.apiService.atualizaItem(this.produtos)
-        .subscribe(
-          () => { this.router.navigateByUrl('/'); this.toastr.success("Produto atualizado com sucesso!");},
-          () => { this.toastr.error('Falha ao atualizar'); }
-        );
-      this.outputProduto.emit(this.produtos);
+    if(this.checkForm()){
+      if (this.activatedRoute.snapshot.params.id === undefined) {
+        this.apiService.addItems(this.produtos)
+          .subscribe(
+            () => { this.router.navigateByUrl('/'); this.toastr.success("Produto cadastrado com sucesso!"); },
+            () => { this.toastr.error('Falha ao adicionar'); }
+          );
+        this.outputProduto.emit(this.produtos);
+      } else {
+        this.apiService.atualizaItem(this.produtos)
+          .subscribe(
+            () => { this.router.navigateByUrl('/'); this.toastr.success("Produto atualizado com sucesso!");},
+            () => { this.toastr.error('Falha ao atualizar'); }
+          );
+        this.outputProduto.emit(this.produtos);
+      }
     }
+    else{
+      console.log(this.produtos);
+      this.toastr.error("Preencha os campos corretamente antes de salvar");
+    }    
+  }
+
+  private checkForm(){
+    if(this.produtos.Nome.length <= 0 || this.produtos.Nome == '' || this.produtos.QuantidadeItens <= 0 || this.produtos.ValorUnitario <= 0 ) return false;
+
+    return true;
   }
 
   getItem(id: number) {
@@ -61,5 +72,9 @@ export class CreateEditComponent implements OnInit {
       }, () => {
         this.toastr.error('Falha ao buscar produtos');
       });
+  }
+
+  public voltarListagem(){
+    this.router.navigate(['']);
   }
 }

@@ -1,72 +1,32 @@
-<form class="form-horizontal" #f="ngForm" (ngSubmit)="onSubmit()">
-        <fieldset>
-            <div class="panel panel-primary">
-                <div class="panel-heading">{{titulo}} de Produtos</div>
+<div class="row">
+    <div class="col">
+        <div class="form-group offset-2">
+            <h2>{{titulo}} de Produtos</h2>
+        </div>
 
-                <div class="panel-body">
+        <form #f="ngForm" (ngSubmit)="onSubmit()">
+            <div class="form-group row">
+                <label class="control-label offset-2 col-2" for="Nome">Nome:<span class="text-danger ml-2">*</span></label>
+                <input #nome="ngModel" id="Nome" name="Nome" maxlength="30" placeholder="Ex: Computador" [(ngModel)]="produtos.Nome" [class.is-invalid]="!nome.valid && nome.touched" class="form-control col-5" required="" type="text">
+            </div>
 
+            <div class="form-group row">
+                <label class="offset-2 col-2 control-label" for="Qnt">Quantidades:<span class="text-danger ml-2">*</span></label>
+                <input #qnt="ngModel" id="qnt" name="qnt" placeholder="Apenas números" [(ngModel)]="produtos.QuantidadeItens" class="form-control col-5" [class.is-invalid]="!qnt.valid && qnt.touched" required="" type="text" maxlength="3" onkeypress="if(isNaN(String.fromCharCode(event.keyCode))) return false;">
+            </div>
 
-                    <!-- Text input-->
-                    <div class="form-group">
-                        <label class="col-md-2 control-label" for="Nome">Nome</label>
-                        <div class="col-md-8">
-                            <input 
-                            #nome="ngModel"
-                            id="Nome" 
-                            name="Nome" 
-                            maxlength="30"
-                            placeholder="" 
-                            [(ngModel)]="produtos.Nome"
-                            [class.is-invalid] = "!nome.valid && nome.touched"
-                            class="form-control input-md" 
-                            required=""
-                            type="text">
-                        </div>
-                    </div>
-                    <div *ngIf="!nome.valid && nome.touched" class="invalid-feedback">
-                        Preencha o campo nome.
-                      </div>
+            <div class="form-group row">
+                <label class="offset-2 col-2 control-label" for="valor">Valor Unitário:<span class="text-danger ml-2">*</span></label>
+                <input #valor="ngModel" currencyMask id="valor" name="valor" class="col-5 form-control text-left" [(ngModel)]="produtos.ValorUnitario" [class.is-invalid]="!valor.valid && valor.touched" [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }" placeholder="Preço do produto. Ex.: 15,00"
+                    required="" />
+            </div>
 
-                    <!-- Text input-->
-                    <div class="form-group">
-                        <label class="col-md-2 control-label" for="Qnt">Quantidades</label>
-                        <div class="col-md-2">
-                            <input 
-                            id="qnt" 
-                            name="qnt" 
-                            placeholder="Apenas números" 
-                            [(ngModel)]="produtos.QuantidadeItens"
-                            class="form-control input-md"
-                            required=""
-                            type="text" 
-                            maxlength="3"
-                            onkeypress="if(isNaN(String.fromCharCode(event.keyCode))) return false;">
-                        </div>
-
-                        <label class="col-md-1 control-label" for="Nome">Valor Unitário</label>
-                        <input currencyMask id="valor" name="valor" class="col-md-2 form-control input-md" [(ngModel)]="produtos.ValorUnitario" [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"/>
-                        <!-- <div class="col-md-2">
-                            <input 
-                            id="valor" 
-                            name="valor" 
-                            placeholder="0,00" 
-                            [(ngModel)]="produtos.ValorUnitario"
-                            class="form-control input-md"
-                            required="" 
-                            type="text" 
-                            maxlength="10">
-                        </div> -->
-                    </div>
-                    
-
-                    <div class="form-group">
-                        <label class="col-md-2 control-label" for="Cadastrar"></label>
-                        <button id="Cadastrar" name="Cadastrar" class="btn btn-success btn-sm ml-1" [disabled]="!f.valid">Salvar</button>
-                        <button id="Cancelar" name="Cancelar" class="btn btn-danger btn-sm ml-1"
-                            routerLink="" type="button">Cancelar</button>
-
-                    </div>
+            <div class="form-group row">
+                <div class="offset-2">
+                    <button id="Voltar" name="Voltar" class="btn btn-link btn-md" type="button" (click)="voltarListagem()">Voltar</button>
+                    <button id="Cadastrar" name="Cadastrar" class="btn btn-success btn-md ml-2 ">Salvar</button>
                 </div>
             </div>
-        </fieldset>
-    </form>
+        </form>
+    </div>
+</div>
