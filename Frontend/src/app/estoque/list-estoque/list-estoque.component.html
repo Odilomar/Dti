@@ -1,65 +1,61 @@
-  <div class="container mt-3">
-
-    <div class="row col-md-0">
-        <div class="text-left">
-          <button type="button" class="btn btn-success" routerLink="/produtos/criar">Incluir Produto</button>
+<div class="container mt-2">
+    <div class="row">
+        <div class="col-4">
+            <form #f="ngForm" (ngSubmit)="getItem(codigo)">
+                <div class="form-group">
+                    <div class="input-group">
+                        <input id="qnt" name="qnt" placeholder="Insira o código" class="form-control input-md" [(ngModel)]="codigo" required="" type="text" onkeypress="if(isNaN(String.fromCharCode(event.keyCode))) return false;" aria-describedby="btnSearch">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-info" id="btnSearch">
+                              <fa-icon [icon]="faSearch"></fa-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="offset-6 col-2 text-right">
+            <button type="button" class="btn btn-success" routerLink="/produtos/criar">
+              <fa-icon [icon]="faPlus"></fa-icon>
+            </button>
         </div>
     </div>
 
-    <div class="container mt-2">
-    <div class="form-group row">
-      <div class="row col-md-0">
-            <input 
-            id="qnt" 
-            name="qnt" 
-            placeholder="Insira o código" 
-            class="form-control input-md"
-            [(ngModel)]="codigo"
-            required=""
-            (keyup.enter)="getItem(codigo)"
-            type="text" 
-            maxlength="3"
-            onkeypress="if(isNaN(String.fromCharCode(event.keyCode))) return false;">
-          </div>
-          <div class="form-group mx-sm-4 mb-4">
-            <button type="button" class="btn btn-primary mb-2" (click)="getItem(codigo)">Pesquisar</button>
-          </div>
+    <div class="row mt-2">
+        <div class="col text-center">
+            <table class=" table table-striped ">
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Nome</th>
+                        <th>Quantidade Item</th>
+                        <th>Valor Unitário</th>
+                        <th>Opções</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr *ngFor="let prod of produtos ">
+                        <td>{{prod.Id}}</td>
+                        <td>{{prod.Nome | titlecase}}</td>
+                        <td>{{prod.QuantidadeItens}}</td>
+                        <td>{{prod.ValorUnitario | currency:'BRL'}}</td>
+                        <td>
+                            <button class="btn btn-danger " (click)="deletaProduto(prod.Id) ">
+                            <fa-icon [icon]="faTrashAlt"></fa-icon>
+                          </button>
+                            <button class="btn btn-info ml-2" routerLink="/produtos/criar/{{prod.Id}} ">
+                            <fa-icon [icon]="faEdit"></fa-icon>
+                          </button>
+                        </td>
+                    </tr>
+
+                    <tr *ngIf="!existemProdutos() ">
+                        <td class="text-center " colspan="5 ">Nenhum Produto cadastrado.</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 
-    <div>
-      <div class="text-center" *ngIf="!existemProdutos()"> Nenhum Produto cadastrado.</div>
-    </div>
-
-    <div class="row mt-1">
-      <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>Código</th>
-              <th>Nome</th>
-              <th>Quantidade Item</th>
-              <th>Valor Unitário</th>
-            </tr>
-          </thead>
-
-            <tbody>
-              
-            <tr *ngFor="let prod of produtos">
-              <td>{{prod.Id}}</td>
-              <td>{{prod.Nome}}</td>
-              <td>{{prod.QuantidadeItens}}</td>
-              <td>R$ {{prod.ValorUnitario}}</td>
-              <td>
-              <button class="btn btn-danger" (click)="deletaProduto(prod.Id)">Excluir</button>
-              <button class="btn btn-success" style="margin-left: 20px;" routerLink="/produtos/criar/{{prod.Id}}">Editar</button>
-              </td>
-            </tr>
-            
-            </tbody>
-            
-            
-      </table>
-      </div>
-      
-    </div>
-  
+</div>

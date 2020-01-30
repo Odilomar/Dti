@@ -6,7 +6,10 @@ import { AppComponent } from './app.component';
 import { ListEstoqueComponent } from './estoque/list-estoque/list-estoque.component';
 import { HttpClientModule } from '@angular/common/http';
 import { CreateEditComponent } from './estoque/create-edit/create-edit.component';
-import {FormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
+
+import { CurrencyMaskModule } from 'ng2-currency-mask';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -18,7 +21,9 @@ import {FormsModule } from '@angular/forms';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    CurrencyMaskModule,
+    FontAwesomeModule
   ],
   providers: [],
   bootstrap: [AppComponent]

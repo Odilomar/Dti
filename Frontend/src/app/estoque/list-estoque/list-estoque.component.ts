@@ -2,6 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ApiService } from 'src/app/service/api.service';
 import { Produto } from 'src/app/interfaces/produto';
+import { faPlus, faTrashAlt, faEdit, faSearch } from '@fortawesome/free-solid-svg-icons';
 
 
 @Component({
@@ -14,6 +15,10 @@ import { Produto } from 'src/app/interfaces/produto';
 export class ListEstoqueComponent implements OnInit {
 
    public produtos: Produto[];
+   public faPlus = faPlus;
+   public faTrashAlt = faTrashAlt;
+   public faEdit = faEdit;
+   public faSearch = faSearch;
    codigo = '';
 
   constructor(private router: Router, private apiService: ApiService, private activatedRoute: ActivatedRoute) { }
