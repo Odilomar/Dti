@@ -92,7 +92,9 @@ export class ListEstoqueComponent implements OnInit {
   }
 
   public changePage(pageNumber: number = 1){
-    pageNumber = pageNumber <= 0 ? 0 : pageNumber;
+    pageNumber = pageNumber <= 0 ? 1 : pageNumber;
+
+    pageNumber = this.counMaxPage > 0 && pageNumber > this.counMaxPage ? this.counMaxPage : pageNumber;
     
     this.counMaxPage = Math.ceil(this.lstProdutos.length/10);
     this.currentPage = pageNumber;
